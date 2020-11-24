@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/shinto/Learn/Projects/pygames/tetris/tetris.py", line 100, in <module>
+    main()
+  File "/home/shinto/Learn/Projects/pygames/tetris/tetris.py", line 95, in main
+    tetris.move_piece_left()
+  File "/home/shinto/Learn/Projects/pygames/tetris/tetris.py", line 65, in move_piece_left
+    new_pos = left(self.piece_position)
+TypeError: left() missing 2 required positional arguments: 'x' and 'y'
