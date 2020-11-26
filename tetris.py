@@ -30,6 +30,7 @@ TetrisBoard: everything related to piece movement.
 Tetriminoes: The pieces.
 """
 
+import numpy as np
 import pygame
 from board import *
 import tetriminoes as tet
@@ -60,39 +61,64 @@ class Tetris(object):
     def get_current_piece_size(self):
         return size(self.cur_piece)
 
+    def update(self):
+        self.board.place(self.cur_piece)
+
+    def remove_piece(self):
+        size = self.cur_piece.size()
+        empty = tet.Tetrimino("E", np.zeros(size), self.cur_piece.pos)
+        self.board.place(empty)
+
     def move_piece_left(self):
         piece = self.cur_piece
-        new_pos = left(self.piece_position)
-        self.place(piece)
+        try:
+            x, y = left(self.board, *piece.pos)
+        except TypeError:
+            print("Can't move left!")
+            return
+        self.remove_piece()
+        piece.pos = x, y
+        self.update()
 
     def move_piece_right(self):
-        pass
+        piece = self.cur_piece
+        try:
+            # __import__("nose").tools.set_trace()
+            x, y = right(self.board, *piece.pos)
+        except TypeError:
+            print("Can't move right!")
+            return
+        self.remove_piece()
+        piece.pos = x, y
+        self.update()
+
+    def move_piece_down(self):
+        piece = self.cur_piece
+        try:
+            # __import__("nose").tools.set_trace()
+            x, y = down(self.board, *piece.pos)
+        except TypeError:
+            print("Can't move down!")
+            return
+        self.remove_piece()
+        piece.pos = x, y
+        self.update()
 
     def rotate_piece(self):
         pass
-
-
-class TetrisBoard(object):
-
-    """Represents a Tetris Board."""
-
-    def __init__(self, rows, colns):
-        """ Creates a rows X colns grid """
-        self.board = zeros((rows, colns))
-        self.size = rows, colns
-
-    def place(self, piece):
-        place(piece, self.board)
 
 
 def main():
     tetris = Tetris(20, 10)
     o = tet.TETRIMINOES["O"]
     tetris.cur_piece = o
-    # tetris.place(o)
+    tetris.update()
     print(tetris)
 
-    tetris.move_piece_left()
+    tetris.move_piece_right()
+    tetris.move_piece_right()
+    tetris.move_piece_right()
+    # tetris.move_piece_right()
     print(tetris)
 
 

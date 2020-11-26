@@ -7,51 +7,15 @@ Uses a grid (2 X 2 matrix) to represent the board.
 from numpy import zeros
 
 
-class Board(object):
-    def __init__(self, rows, colns):
-        """ Creates a rows X colns grid """
-        self.b = zeros((rows, colns))
-        self.size = rows, colns
-
-    @property
-    def size(self):
-        return self.size
-
-    def __str__(self):
-        return str(self.b)
-
-    def place(self, cell):
-        x, y = cell.pos
-        self.b[x][y] = cell.val
-
-
-class Cell(object):
-    def __init__(self, x, y, val=1):
-        self.pos = x, y
-        self.val = val
-
-
 def size(board):
     """ Calculate the size (rows, cols) of the board """
     try:
-        return (len(board), len(board[0]))
+        return board.size()
     except:
-        return (0, 0)
-
-
-def place(piece, board):
-    """
-    Place piece on the board
-    """
-    x, y = piece.pos
-    shape = piece.get_shape()
-    print(x, y)
-    print(shape)
-    r, c = size(shape)
-
-    for i in range(r):
-        for j in range(c):
-            board[i + x][j + y] = shape[i][j]
+        try:
+            return (len(board), len(board[0]))
+        except:
+            return (0, 0)
 
 
 def up(b, x, y):
@@ -110,12 +74,55 @@ right_up = diagonals(right, up)
 right_down = diagonals(right, down)
 
 
+class TetrisBoard(object):
+
+    """Represents a Tetris Board."""
+
+    def __init__(self, rows, colns):
+        """ Creates a rows X colns grid """
+        self.board = zeros((rows, colns))
+        self._size = rows, colns
+
+    def size(self):
+        return self._size
+
+    def __str__(self):
+        return str(self.board)
+
+    def place(self, piece):
+        """
+        Place piece on the board
+        """
+        # __import__("nose").tools.set_trace()
+        x, y = piece.pos
+        shape = piece.get_shape()
+        print(x, y)
+        print(shape)
+        r, c = size(piece)
+        for i in range(r):
+            for j in range(c):
+                self.board[i + x][j + y] = shape[i][j]
+
+
+def move_left(board, piece):
+    try:
+        x, y = left(board.board, *piece.pos)
+        print(x, y)
+    except TypeError:
+        print("Can't move left!")
+        return
+    piece.pos = x, y
+    board.place(piece)
+
+
 if __name__ == "__main__":
     from tetriminoes import *
 
     ROW, COL = 20, 10
+    O = TETRIMINOES["O"]
+    # O.pos = (0, 0)
+    b1 = TetrisBoard(ROW, COL)
+    # b1.place(O)
 
-    b1 = create_board(ROW, COL)
-    place(O, b1)
-
+    move_left(b1, O)
     print(b1)

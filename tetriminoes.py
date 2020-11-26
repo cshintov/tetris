@@ -18,6 +18,8 @@ Shape = {
 import numpy as np
 from collections import deque
 
+from board import size
+
 sizes = {
     **dict.fromkeys(["I", "O"], 4),
     **dict.fromkeys(["L", "J", "S", "Z", "T"], 3),
@@ -75,6 +77,10 @@ class Tetrimino(object):
     def previous(self):
         return self.shapes.previous()
 
+    def size(self):
+        r = len(self.get_shape())
+        return (r, r)
+
 
 # Create Tetriminoes
 O = Tetrimino("O", np.array([[1, 1, 0], [1, 1, 0], [0, 0, 0]]), rotations=1)
@@ -88,6 +94,14 @@ I = Tetrimino("I", np.array([[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0,
 TETRIMINOES = {"O": O, "T": T, "L": L, "J": J, "S": S, "Z": Z, "I": I}
 
 
+def get_ones(grid):
+    r, c = size(grid)
+    return [(i, j) for i in range(r) for j in range(c) if grid[i][j] == 1]
+
+
+print(get_ones(O.get_shape()))
+
+
 def show(piece):
     for i in range(4):
         print(piece.get_shape())
@@ -96,5 +110,6 @@ def show(piece):
 
 if __name__ == "__main__":
     # main()
-    doseq(print, [O, L])
-    show(O)
+    # doseq(print, [O, L])
+    # show(O)
+    pass
