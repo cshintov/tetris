@@ -43,7 +43,7 @@ def rotate_right(deq):
 
 
 def rotate(grid):
-    return np.rot90(grid)
+    return np.rot90(grid, k=-1)
 
 
 def ntimes(func, initial, n):
@@ -68,7 +68,36 @@ def create_tetrimino(typ, shape, color):
     }
 
 
-O = create_tetrimino("O", np.array(([1, 1, 0], [1, 1, 0], [0, 0, 0])), "yellow")
+# Create Tetriminoes
+O = create_tetrimino("O", np.array(([1, 1, 0], [1, 1, 0], [0, 0, 0])), (255, 255, 0))
+T = create_tetrimino("T", np.array([[0, 1, 0], [1, 1, 1], [0, 0, 0]]), (128, 0, 128))
+L = create_tetrimino("L", np.array([[1, 0, 0], [1, 0, 0], [1, 1, 0]]), (255, 165, 0))
+J = create_tetrimino("J", np.array([[0, 1, 0], [0, 1, 0], [1, 1, 0]]), (0, 0, 255))
+S = create_tetrimino("S", np.array([[0, 1, 1], [1, 1, 0], [0, 0, 0]]), (0, 255, 0))
+Z = create_tetrimino("Z", np.array([[1, 1, 0], [0, 1, 1], [0, 0, 0]]), (255, 0, 0))
+I = create_tetrimino(
+    "I",
+    np.array([[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]]),
+    (0, 255, 255),
+)
+
+TETRIMINOES = {"O": O, "T": T, "L": L, "J": J, "S": S, "Z": Z, "I": I}
+
+
+def view(shape, size):
+    v = np.zeros(size)
+    for i, j in shape:
+        v[i][j] = 1
+
+    print(v)
+
+
+def inspect(t):
+    for shape in t["shapes"]:
+        view(shape, t["size"])
+
+
+inspect(T)
 
 
 def ignore_error(Error):

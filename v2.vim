@@ -9,12 +9,13 @@ endif
 set shortmess=aoO
 badd +1 README.md
 badd +16 tetrimino.py
-badd +0 ~/.config/nvim/init.vim
-badd +0 ~/.config/nvim/compiler/python.vim
+badd +39 ~/.config/nvim/init.vim
+badd +17 ~/.config/nvim/compiler/python.vim
+badd +8 tests.py
+badd +1328 ~/.pyenv/versions/c4/envs/neovim/lib/python3.8/site-packages/jedi/third_party/typeshed/stdlib/2and3/builtins.pyi
 argglobal
 %argdel
 $argadd README.md
-set stal=2
 edit tetrimino.py
 set splitbelow splitright
 set nosplitbelow
@@ -33,64 +34,39 @@ setlocal fdl=0
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 30 - ((14 * winheight(0) + 12) / 24)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-30
-normal! 02|
-tabedit ~/.config/nvim/init.vim
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 103 - ((21 * winheight(0) + 12) / 24)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
+23
+normal! zo
+29
+normal! zo
+37
+normal! zo
+41
+normal! zo
+45
+normal! zo
+49
+normal! zo
+52
+normal! zo
+62
+normal! zo
+87
+normal! zo
+95
+normal! zo
 103
-normal! 02|
-tabedit ~/.config/nvim/compiler/python.vim
-set splitbelow splitright
-set nosplitbelow
-set nosplitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 17 - ((16 * winheight(0) + 12) / 24)
+normal! zo
+117
+normal! zo
+127
+normal! zo
+let s:l = 134 - ((30 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-17
-normal! 0
-tabnext 2
-set stal=1
+134
+normal! 010|
+tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
