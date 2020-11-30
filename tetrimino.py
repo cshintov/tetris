@@ -27,6 +27,7 @@ def get_ones(shape):
 
 
 """ Need to create a cycle 
+
 A cycle is nothing but a sequence that can be traversed cyclically in both direction.
 It will have to methods: next and previous
 
@@ -35,11 +36,11 @@ from collections import deque
 
 
 def rotate_left(deq):
-    return deq.rotate(-1)
+    return deq.rotate()
 
 
 def rotate_right(deq):
-    return deq.rotate()
+    return deq.rotate(-1)
 
 
 def rotate(grid):
@@ -61,6 +62,7 @@ def ntimes(func, initial, n):
 
 def create_tetrimino(typ, shape, color):
     return {
+        "pos": (0, 4),
         "type": typ,
         "size": shape.shape,
         "color": color,
@@ -97,9 +99,6 @@ def inspect(t):
         view(shape, t["size"])
 
 
-inspect(T)
-
-
 def ignore_error(Error):
     def decorator(func):
         def inner(*args, **kwargs):
@@ -118,17 +117,97 @@ def ignore_error(Error):
 def is_valid(t, board, pos):
     ones = t["shapes"][0]
     x, y = pos
+    assert x * y >= 0
     for i, j in ones:
         board[i + x][j + y]
 
     return True
 
 
-def place(t, board, pos):
+def place(t, board, symbol=1):
+    pos = t["pos"]
     if not is_valid(t, board, pos):
-        return
+        return False
 
     ones = t["shapes"][0]
     x, y = pos
     for i, j in ones:
-        board[i + x][j + y] = 1
+        board[i + x][j + y] = symbol
+
+    return True
+
+
+def clear(t, board):
+    place(t, board, 0)
+
+
+"""
+Creating tetriminos and placing it on the board on a coordinate is done.
+Next is moving left, right, down and rotate.
+"""
+
+
+def left(pos):
+    x, y = pos
+    return (x, y - 1)
+
+
+def right(pos):
+    x, y = pos
+    return (x, y + 1)
+
+
+def down(pos):
+    x, y = pos
+    return (x + 1, y)
+
+
+def move(dirn):
+    def helper(t, board):
+        """ Move t left on the board. """
+        clear(t, board)
+
+        cur_pos = t["pos"]
+        t["pos"] = dirn(cur_pos)
+
+        success = place(t, board)
+        if not success:
+            t["pos"] = cur_pos
+            place(t, board)
+
+        return success
+
+    return helper
+
+
+# Move tetriminos left, right or down
+move_left = move(left)
+move_right = move(right)
+move_down = move(down)
+
+
+def next_tetrimino(t):
+    return t["shapes"][0]
+
+
+def rotate_tetrimino(dirn="clockwise"):
+    if dirn == "clockwise":
+        forward, backward = rotate_right, rotate_left
+    else:
+        forward, backward = rotate_left, rotate_right
+
+    def helper(t, board):
+        clear(t, board)
+        forward(t["shapes"])
+        success = place(t, board)
+        if not success:
+            backward(t["shapes"])
+            place(t, board)
+        return success
+
+    return helper
+
+
+# Rotate tetrimino clockwise or anticlockwise
+rotate_clockwise = rotate_tetrimino("clockwise")
+rotate_anticlockwise = rotate_tetrimino("anticlockwise")
